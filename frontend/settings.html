@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings | AppSec Orchestrator</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="workspace">
+    <header class="appbar" id="appbar"></header>
+
+    <div class="content-header">
+      <div>
+        <h1>Account & Activity</h1>
+        <p>Your profile details and recent security actions.</p>
+      </div>
+    </div>
+
+    <div class="alert" id="message"></div>
+
+    <div class="grid two-col" style="margin-bottom:16px">
+      <article class="panel">
+        <h2>Profile</h2>
+        <table>
+          <tr><td style="color:var(--muted);width:100px">Name</td><td id="profileName">—</td></tr>
+          <tr><td style="color:var(--muted)">Email</td><td id="profileEmail">—</td></tr>
+          <tr><td style="color:var(--muted)">Role</td><td id="profileRole">—</td></tr>
+          <tr><td style="color:var(--muted)">Member since</td><td id="profileDate">—</td></tr>
+        </table>
+      </article>
+      <article class="panel" style="background:rgba(32,211,155,.05);border-color:rgba(32,211,155,.2)">
+        <h2>🎯 Demo Script</h2>
+        <p style="color:var(--muted);font-size:13px;line-height:1.7">
+          <strong style="color:var(--accent)">What to say:</strong><br>
+          "I built a tool that automatically secures any codebase.
+          It finds hardcoded secrets, SQL injection patterns, and dangerous functions —
+          then fixes them in one click with a full rollback trail."
+        </p>
+      </article>
+    </div>
+
+    <article class="panel">
+      <h2>Audit Log</h2>
+      <table>
+        <thead><tr><th>Action</th><th>Resource</th><th>Date & Time</th></tr></thead>
+        <tbody id="activity"><tr><td colspan="3" class="empty">Loading...</td></tr></tbody>
+      </table>
+    </article>
+
+  </main>
+</div>
+<script src="/js/app.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  if (!(await App.setupPage("settings"))) return;
+  try {
+    const { user, activity } = await App.api("/api/users/me");
+    document.querySelector("#profileName").textContent = user.name;
+    document.querySelector("#profileEmail").textContent = user.email;
+    document.querySelector("#profileRole").textContent = user.role;
+    document.querySelector("#profileDate").textContent = new Date(user.created_at).toLocaleDateString();
+    document.querySelector("#activity").innerHTML = activity.length
+      ? activity.map(e => `
+          <tr>
+            <td><strong>${App.escape(e.action)}</strong></td>
+            <td style="color:var(--muted)">${App.escape(e.entity_type)} #${e.entity_id || "—"}</td>
+            <td style="color:var(--muted);font-size:13px">${new Date(e.created_at).toLocaleString()}</td>
+          </tr>`).join("")
+      : `<tr><td colspan="3" class="empty">No activity recorded yet.</td></tr>`;
+  } catch (err) {
+    App.msg(err.message, "error");
+  }
+});
+</script>
+</body>
+</html>

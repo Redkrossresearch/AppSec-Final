@@ -1,0 +1,12 @@
+{
+  "id": "INJ003",
+  "category": "injection",
+  "title": "MongoDB JavaScript query operator",
+  "description": "The $where operator may allow injected JavaScript execution.",
+  "pattern": "[\"']\\$where[\"']\\s*:",
+  "extensions": [".py", ".js", ".ts", ".json"],
+  "severity": "high",
+  "cvss_score": 8.0,
+  "fixable": false,
+  "recommendation": "Use typed query operators and prohibit $where in user input."
+}

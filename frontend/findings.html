@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Findings | AppSec Orchestrator</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="workspace">
+    <header class="appbar" id="appbar"></header>
+
+    <div class="content-header">
+      <div>
+        <h1>All Findings</h1>
+        <p>Every security issue detected across all your projects.</p>
+      </div>
+      <span id="findingCount" style="color:var(--muted);font-size:14px"></span>
+    </div>
+
+    <div class="alert" id="message"></div>
+
+    <!-- Filters -->
+    <div class="toolbar">
+      <label>
+        Severity
+        <select id="severityFilter">
+          <option value="">All severities</option>
+          <option value="critical">Critical</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </label>
+      <label>
+        Status
+        <select id="statusFilter">
+          <option value="">All statuses</option>
+          <option value="open">Open</option>
+          <option value="fixed">Fixed</option>
+          <option value="accepted">Accepted</option>
+          <option value="false_positive">False Positive</option>
+        </select>
+      </label>
+    </div>
+
+    <article class="panel">
+      <table>
+        <thead>
+          <tr>
+            <th>Severity</th>
+            <th>Category</th>
+            <th>Finding</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="findingRows">
+          <tr><td colspan="5" class="empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+  </main>
+</div>
+<script src="/js/app.js"></script>
+<script src="/js/findings.js"></script>
+</body>
+</html>

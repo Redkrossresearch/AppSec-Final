@@ -1,0 +1,8 @@
+{
+  "packages": {
+    "django": {"below": "4.2.16", "severity": "high", "title": "Django version below maintained security baseline"},
+    "flask": {"below": "2.3.3", "severity": "medium", "title": "Flask version below supported security baseline"},
+    "requests": {"below": "2.32.0", "severity": "medium", "title": "Requests version should be upgraded"},
+    "pyyaml": {"below": "6.0.1", "severity": "high", "title": "PyYAML version should be upgraded"}
+  }
+}

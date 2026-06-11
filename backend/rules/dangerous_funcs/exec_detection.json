@@ -1,0 +1,12 @@
+{
+  "id": "FUNC002",
+  "category": "dangerous_functions",
+  "title": "Use of exec",
+  "description": "exec executes arbitrary Python code and normally requires manual redesign.",
+  "pattern": "\\bexec\\s*\\(",
+  "extensions": [".py"],
+  "severity": "high",
+  "cvss_score": 8.6,
+  "fixable": false,
+  "recommendation": "Replace dynamic code execution with explicit dispatch or parsing."
+}

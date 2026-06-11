@@ -1,0 +1,12 @@
+{
+  "id": "INJ001",
+  "category": "injection",
+  "title": "Shell command execution",
+  "description": "A subprocess call enables shell interpretation.",
+  "pattern": "\\b(subprocess\\.(run|Popen|call)|os\\.system)\\s*\\(.*(shell\\s*=\\s*True|\\+|f[\"'])",
+  "extensions": [".py"],
+  "severity": "high",
+  "cvss_score": 8.8,
+  "fixable": false,
+  "recommendation": "Pass an argument array with shell disabled and validate allowed commands."
+}

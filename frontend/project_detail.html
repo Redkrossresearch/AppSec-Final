@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project | AppSec Orchestrator</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="workspace">
+    <header class="appbar" id="appbar"></header>
+
+    <div class="content-header">
+      <div>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:6px"><a href="/projects">← Projects</a></p>
+        <h1 id="projectName">Loading...</h1>
+        <p id="projectPath" style="color:var(--muted);font-size:13px;word-break:break-all"></p>
+      </div>
+      <button id="startScan">▶ Run Security Scan</button>
+    </div>
+
+    <div class="alert" id="message"></div>
+
+    <article class="panel">
+      <h2>Scan History</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Scan #</th>
+            <th>Status</th>
+            <th>Files</th>
+            <th>Findings</th>
+            <th>Top Severity</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="scanList">
+          <tr><td colspan="6" class="empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+  </main>
+</div>
+<script src="/js/app.js"></script>
+<script src="/js/scans.js"></script>
+</body>
+</html>

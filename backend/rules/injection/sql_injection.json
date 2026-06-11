@@ -1,0 +1,12 @@
+{
+  "id": "INJ002",
+  "category": "injection",
+  "title": "Dynamic SQL construction",
+  "description": "SQL appears to include values through formatting or concatenation.",
+  "pattern": "\\b(execute|executemany)\\s*\\(\\s*(f[\"']|[^)]*(\\+|%\\s*\\())",
+  "extensions": [".py", ".php", ".java"],
+  "severity": "high",
+  "cvss_score": 8.8,
+  "fixable": false,
+  "recommendation": "Use parameterized queries with driver-specific placeholders."
+}

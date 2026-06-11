@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reports | AppSec Orchestrator</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="workspace">
+    <header class="appbar" id="appbar"></header>
+
+    <div class="content-header">
+      <div>
+        <h1>Reports</h1>
+        <p>Download PDF or CSV security reports for completed scans.</p>
+      </div>
+    </div>
+
+    <div class="alert" id="message"></div>
+
+    <article class="panel">
+      <table>
+        <thead>
+          <tr>
+            <th>Scan</th>
+            <th>Format</th>
+            <th>Generated</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody id="reportRows">
+          <tr><td colspan="4" class="empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+    <div class="panel" style="margin-top:16px;background:rgba(32,211,155,.06);border-color:rgba(32,211,155,.2)">
+      <p style="color:var(--muted);font-size:13px">
+        💡 <strong style="color:var(--accent)">Tip:</strong>
+        To generate a new report, open any scan from your
+        <a href="/projects">projects</a> and click the PDF or CSV button.
+      </p>
+    </div>
+
+  </main>
+</div>
+<script src="/js/app.js"></script>
+<script src="/js/reports.js"></script>
+</body>
+</html>

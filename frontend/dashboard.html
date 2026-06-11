@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard | AppSec Orchestrator</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="workspace">
+    <header class="appbar" id="appbar"></header>
+
+    <div class="content-header">
+      <div>
+        <h1>Security Dashboard</h1>
+        <p>Overview of all your projects, scans, and findings.</p>
+      </div>
+      <a class="button" href="/projects">+ New Project</a>
+    </div>
+
+    <div class="alert" id="message"></div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="panel metric">
+        <small>Projects</small>
+        <div class="number" id="projectsMetric">—</div>
+      </div>
+      <div class="panel metric">
+        <small>Total Scans</small>
+        <div class="number" id="scansMetric">—</div>
+      </div>
+      <div class="panel metric">
+        <small>Open Findings</small>
+        <div class="number" id="findingsMetric" style="color:var(--warning)">—</div>
+      </div>
+      <div class="panel metric">
+        <small>Auto-Fixed</small>
+        <div class="number" id="fixedMetric" style="color:var(--accent)">—</div>
+      </div>
+    </div>
+
+    <!-- Charts + Recent scans -->
+    <div class="grid two-col">
+      <article class="panel">
+        <h2>Severity Breakdown</h2>
+        <div class="severity-bars" id="severityBars">
+          <div class="severity-bar" data-level="critical"><div style="height:4px"></div><span>critical</span><br><strong>—</strong></div>
+          <div class="severity-bar" data-level="high"><div style="height:4px"></div><span>high</span><br><strong>—</strong></div>
+          <div class="severity-bar" data-level="medium"><div style="height:4px"></div><span>medium</span><br><strong>—</strong></div>
+          <div class="severity-bar" data-level="low"><div style="height:4px"></div><span>low</span><br><strong>—</strong></div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>Recent Scans</h2>
+        <table>
+          <thead><tr><th>Scan</th><th>Status</th><th>Files</th><th>Findings</th></tr></thead>
+          <tbody id="recentScans"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody>
+        </table>
+        <div style="margin-top:14px">
+          <a href="/projects" style="font-size:13px;color:var(--muted)">View all projects →</a>
+        </div>
+      </article>
+    </div>
+
+  </main>
+</div>
+<script src="/js/app.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

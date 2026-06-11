@@ -1,0 +1,12 @@
+{
+  "id": "FUNC003",
+  "category": "dangerous_functions",
+  "title": "Unsafe pickle deserialization",
+  "description": "Unpickling untrusted bytes can execute arbitrary code.",
+  "pattern": "\\bpickle\\.loads?\\s*\\(",
+  "extensions": [".py"],
+  "severity": "critical",
+  "cvss_score": 9.8,
+  "fixable": false,
+  "recommendation": "Replace pickle input with signed JSON or another safe serialization format."
+}

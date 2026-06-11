@@ -1,0 +1,12 @@
+{
+  "id": "FUNC001",
+  "category": "dangerous_functions",
+  "title": "Use of eval",
+  "description": "eval can execute attacker-controlled Python expressions.",
+  "pattern": "\\beval\\s*\\(",
+  "extensions": [".py"],
+  "severity": "high",
+  "cvss_score": 8.1,
+  "fixable": true,
+  "recommendation": "Use ast.literal_eval for literal input or parse a defined data format."
+}

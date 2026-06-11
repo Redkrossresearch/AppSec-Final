@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scan Results | AppSec Orchestrator</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="workspace">
+    <header class="appbar" id="appbar"></header>
+
+    <div class="content-header">
+      <div>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:6px"><a href="/projects">← Projects</a></p>
+        <h1 id="scanTitle">Scan Results</h1>
+        <p id="scanSummary" style="color:var(--muted);font-size:14px"></p>
+      </div>
+      <div class="stack">
+        <button class="secondary" id="csvReport">📋 CSV</button>
+        <button class="secondary" id="pdfReport">📄 PDF</button>
+        <button class="secondary" id="downloadFixed" style="display:none" title="Download the fixed project ZIP">⬇ Download Fixed</button>
+      </div>
+    </div>
+
+    <div class="alert" id="message"></div>
+
+    <!-- Metrics row -->
+    <div class="metrics" style="grid-template-columns:repeat(4,minmax(110px,1fr))">
+      <div class="panel metric">
+        <small>Total Findings</small>
+        <div class="number" id="mTotal">—</div>
+      </div>
+      <div class="panel metric">
+        <small>Critical</small>
+        <div class="number" id="mCritical" style="color:var(--danger)">—</div>
+      </div>
+      <div class="panel metric">
+        <small>High</small>
+        <div class="number" id="mHigh" style="color:var(--warning)">—</div>
+      </div>
+      <div class="panel metric">
+        <small>Auto-Fixed</small>
+        <div class="number" id="mFixed" style="color:var(--accent)">—</div>
+      </div>
+    </div>
+
+    <!-- Fix All banner -->
+    <div class="fix-all-bar" id="fixAllBar" style="display:none">
+      <div>
+        <p>🔧 Auto-fix available for <strong id="fixableCount">0</strong> findings</p>
+        <small>Applies safe, reversible patches with backup. You can roll back any fix.</small>
+      </div>
+      <button id="fixAllBtn">⚡ Fix All</button>
+    </div>
+
+    <!-- Findings table -->
+    <article class="panel">
+      <h2>Findings</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Severity</th>
+            <th>Finding</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="scanFindings">
+          <tr><td colspan="5" class="empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+  </main>
+</div>
+<script src="/js/app.js"></script>
+<script src="/js/scans.js"></script>
+</body>
+</html>
