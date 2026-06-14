@@ -1,0 +1,28 @@
+{
+  "AgentTesla": {
+    "category": "Information Stealer",
+    "targets": ["Windows"],
+    "impact": [
+      "Credential Theft",
+      "Keylogging"
+    ]
+  },
+
+  "RedLine": {
+    "category": "Information Stealer",
+    "targets": ["Windows"],
+    "impact": [
+      "Browser Password Theft",
+      "Cookie Theft"
+    ]
+  },
+
+  "Emotet": {
+    "category": "Banking Trojan",
+    "targets": ["Windows"],
+    "impact": [
+      "Credential Theft",
+      "Lateral Movement"
+    ]
+  }
+}
