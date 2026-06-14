@@ -4,3 +4,14 @@ Flask-Login>=0.6,<1.0
 python-dotenv>=1.0,<2.0
 reportlab>=4.0,<5.0
 anthropic>=0.7,<1.0
+
+# DeepSec (document / malware analysis) engine — merged in Phase 1 of the DeepSec stitch.
+# Flask, Werkzeug and reportlab are already covered by AppSec's ranges above, so only
+# the document-parsing and YARA libraries are added here.
+PyPDF2==3.0.1
+python-docx==1.2.0
+openpyxl==3.1.5
+python-pptx==1.0.2
+Pillow>=11.0            # reportlab already pulls a 12.x Pillow; range avoids a downgrade
+requests>=2.32,<3.0
+yara-python==4.5.4
