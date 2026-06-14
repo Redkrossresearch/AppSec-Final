@@ -19,6 +19,7 @@ PAGES = {
     "projects": "projects.html",
     "project-detail": "project_detail.html",
     "findings": "findings.html",
+    "document-scan": "document_scan.html",
     "fix-preview": "fix_preview.html",
     "reports": "reports.html",
     "scan-detail": "scan_detail.html",

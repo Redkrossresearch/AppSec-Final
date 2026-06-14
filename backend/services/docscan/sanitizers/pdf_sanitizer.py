@@ -3,8 +3,13 @@ import re
 
 def sanitize_pdf(
     source,
-    output_folder="sanitized/pdf"
+    output_folder=None
 ):
+
+    # Default keeps standalone behaviour; callers (the docscans route) pass a
+    # per-scan directory like reports/<scan_id>/sanitized/ instead of the repo root.
+    if output_folder is None:
+        output_folder = "sanitized/pdf"
 
     os.makedirs(
         output_folder,

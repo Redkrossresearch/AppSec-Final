@@ -61,6 +61,7 @@ window.App = {
         ["dashboard","Dashboard","🛡"],
         ["projects","Projects","📁"],
         ["findings","Findings","🔍"],
+        ["document-scan","Documents","📑"],
         ["reports","Reports","📄"],
         ["settings","Settings","⚙"],
       ];

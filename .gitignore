@@ -40,6 +40,10 @@ uploads/
 logs/
 reports/
 
+# DeepSec document-sanitizer output. Per-scan copies live under reports/ (ignored above);
+# this catches any standalone-default writes to the repo root.
+sanitized/
+
 # Keep generated onboarding/report docs but drop ad-hoc PDFs/exports
 reports/pdf/
 reports/csv/

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document Scan | AppSec Orchestrator</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="workspace">
+    <header class="appbar" id="appbar"></header>
+
+    <div class="content-header">
+      <div>
+        <h1>Document Scan</h1>
+        <p style="color:var(--muted);font-size:14px">
+          Upload a document (PDF, DOCX, XLSX, PPTX, ZIP or image) to analyze it for hidden
+          malware, payloads and indicators of compromise with the DeepSec engine.
+        </p>
+      </div>
+    </div>
+
+    <div class="alert" id="message"></div>
+
+    <article class="panel" style="max-width:560px">
+      <h2>Upload a document</h2>
+      <form id="docForm" style="margin-top:12px">
+        <input type="file" id="docFile" name="file"
+               accept=".pdf,.docx,.xlsx,.pptx,.zip,.png,.jpg,.jpeg,.gif,.bmp"
+               style="margin-bottom:14px" required>
+        <div class="stack">
+          <button type="submit" id="scanBtn">🔬 Scan Document</button>
+        </div>
+        <small style="display:block;margin-top:10px;color:var(--muted)">
+          The document is scanned synchronously; results open in the standard findings view.
+        </small>
+      </form>
+    </article>
+
+  </main>
+</div>
+<script src="/js/app.js"></script>
+<script src="/js/document_scan.js"></script>
+</body>
+</html>

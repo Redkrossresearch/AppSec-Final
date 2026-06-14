@@ -96,7 +96,7 @@ import os
 import re
 
 
-def scan_pdf(file_path):
+def scan_pdf(file_path, sanitized_dir=None):
 
     findings = []
 
@@ -378,7 +378,7 @@ YARA Matches: {len(yara_results)}
         })
 
         # Sanitized File
-        safe_file = sanitize_pdf(file_path)
+        safe_file = sanitize_pdf(file_path, output_folder=sanitized_dir)
         findings.append({
             "type": "Sanitized File",
             "value": safe_file

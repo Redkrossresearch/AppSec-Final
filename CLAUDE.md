@@ -5,11 +5,12 @@ This repo is mid-merge with DeepSec (document malware scanner).
 Follow MERGE_STRATEGY.md in this repo root for the full plan.
 
 ## Current Phase
-Phase 2 complete — `docscan/adapter.py::scan_document(path)` built and unit-tested: maps DeepSec's
-`{"type","value"}` output onto AppSec's Finding contract (category `"document"`, `fixable=False`),
-returns `{"findings","files_scanned":1,"summary"}` with DeepSec intelligence folded into a nested
-`summary["document"]` block. Reuses `risk_calculator.calculate_risk`. Not yet wired into the app.
-Next: Phase 3 — `scan_type` column + `backend/api/docscans.py` route + upload UI.
+Phase 3 complete — document engine is wired into the app. `Scan.scan_type` ("code"|"document") added;
+`backend/api/docscans.py` (`POST /api/docscans`) mirrors `scans.py::start_scan` — uploads a document to a
+per-user "Documents" project, runs `scan_document()`, writes Finding rows + `json`/`sanitized` Report rows.
+Frontend `/document-scan` uploader redirects to the shared `/scan-detail` results view. Sanitized output now
+lands in `reports/<scan_id>/sanitized/`. Verified end-to-end (doc + code scans). Next: Phase 4 — adopt
+DeepSec's AI router as the shared AI layer (`deepsec/ai/`, still in place).
 Update this line as each phase completes.
 
 ## Key Rules
@@ -18,9 +19,9 @@ Update this line as each phase completes.
 - Do NOT route document findings through the code auto-fixer
 - Do NOT modify instance/appsec.db directly — drop and recreate it
 - fixable=False for all document findings from DeepSec
-- sanitize_pdf() currently writes to relative `sanitized/pdf/` at repo root —
-  Phase 3 must route sanitized output to `reports/<scan_id>/` instead
-- Add `sanitized/` to .gitignore before committing any scan artifacts 
+- sanitize_pdf() now takes `output_folder`; the docscans route routes sanitized output to
+  `reports/<scan_id>/sanitized/` (resolved in Phase 3). Don't reintroduce repo-root `sanitized/` writes
+- `sanitized/` is in .gitignore (Phase 3); sanitized artifacts live under the ignored `reports/`
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 

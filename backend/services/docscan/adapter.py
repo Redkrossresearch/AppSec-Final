@@ -150,12 +150,15 @@ def _error_finding(value, filename):
     }
 
 
-def scan_document(path):
+def scan_document(path, sanitized_dir=None):
     """Scan one document and return AppSec's scan-result contract.
 
     Returns ``{"findings": [...], "files_scanned": 1, "summary": {...}}``. Unsupported
     extensions yield a single info finding rather than raising, so the caller's request
     flow mirrors a normal (zero-threat) scan.
+
+    ``sanitized_dir`` (optional) is where PDF sanitization writes its cleaned copy — the
+    docscans route passes ``reports/<scan_id>/sanitized/``. Only PDF scans sanitize.
     """
     path = Path(path)
     filename = path.name
@@ -182,7 +185,11 @@ def scan_document(path):
         summary["document"] = {"file_name": filename, "supported": False}
         return {"findings": findings, "files_scanned": 1, "summary": summary}
 
-    raw = scanner(str(path))
+    # Only the PDF scanner sanitizes; pass the per-scan dir through to it.
+    if scanner is scan_pdf:
+        raw = scanner(str(path), sanitized_dir=sanitized_dir)
+    else:
+        raw = scanner(str(path))
 
     # Partition the raw {"type","value"} stream into metadata vs. recommendations
     # vs. threat indicators, preserving repeats (e.g. many URLs) as lists.

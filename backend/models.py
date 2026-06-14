@@ -50,6 +50,7 @@ class Scan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey("projects.id"), nullable=False, index=True)
     status = db.Column(db.String(30), nullable=False, default="queued")
+    scan_type = db.Column(db.String(20), nullable=False, default="code")
     total_files = db.Column(db.Integer, nullable=False, default=0)
     summary_json = db.Column(db.Text, nullable=False, default="{}")
     error = db.Column(db.Text)
@@ -68,6 +69,7 @@ class Scan(db.Model):
 
     def to_dict(self):
         return {"id": self.id, "project_id": self.project_id, "status": self.status,
+                "scan_type": self.scan_type,
                 "total_files": self.total_files, "finding_count": len(self.findings),
                 "summary": self.summary, "error": self.error,
                 "started_at": self.started_at.isoformat(),

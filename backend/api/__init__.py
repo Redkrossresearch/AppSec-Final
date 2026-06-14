@@ -1,5 +1,6 @@
 from backend.api.auth import auth_bp
 from backend.api.dashboard import dashboard_bp
+from backend.api.docscans import docscans_bp
 from backend.api.findings import findings_bp
 from backend.api.fixes import fixes_bp
 from backend.api.projects import projects_bp
@@ -9,5 +10,5 @@ from backend.api.users import users_bp
 
 API_BLUEPRINTS = [
     auth_bp, dashboard_bp, projects_bp, scans_bp,
-    findings_bp, fixes_bp, reports_bp, users_bp
+    findings_bp, fixes_bp, reports_bp, users_bp, docscans_bp
 ]
