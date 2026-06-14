@@ -5,9 +5,11 @@ This repo is mid-merge with DeepSec (document malware scanner).
 Follow MERGE_STRATEGY.md in this repo root for the full plan.
 
 ## Current Phase
-Phase 1 complete — DeepSec's scanners/extractors/intelligence/sanitizers/utils moved under
-`backend/services/docscan/`, imports rewritten, deps unified, all packages import clean. Not yet
-wired into the app (no adapter/route/UI). Next: Phase 2 — build `docscan/adapter.py::scan_document()`.
+Phase 2 complete — `docscan/adapter.py::scan_document(path)` built and unit-tested: maps DeepSec's
+`{"type","value"}` output onto AppSec's Finding contract (category `"document"`, `fixable=False`),
+returns `{"findings","files_scanned":1,"summary"}` with DeepSec intelligence folded into a nested
+`summary["document"]` block. Reuses `risk_calculator.calculate_risk`. Not yet wired into the app.
+Next: Phase 3 — `scan_type` column + `backend/api/docscans.py` route + upload UI.
 Update this line as each phase completes.
 
 ## Key Rules
