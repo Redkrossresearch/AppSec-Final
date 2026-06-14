@@ -5,12 +5,11 @@ This repo is mid-merge with DeepSec (document malware scanner).
 Follow MERGE_STRATEGY.md in this repo root for the full plan.
 
 ## Current Phase
-Phase 3 complete — document engine is wired into the app. `Scan.scan_type` ("code"|"document") added;
-`backend/api/docscans.py` (`POST /api/docscans`) mirrors `scans.py::start_scan` — uploads a document to a
-per-user "Documents" project, runs `scan_document()`, writes Finding rows + `json`/`sanitized` Report rows.
-Frontend `/document-scan` uploader redirects to the shared `/scan-detail` results view. Sanitized output now
-lands in `reports/<scan_id>/sanitized/`. Verified end-to-end (doc + code scans). Next: Phase 4 — adopt
-DeepSec's AI router as the shared AI layer (`deepsec/ai/`, still in place).
+Phase 5 complete (Phase 4 DEFERRED) — merged two-engine product verified end-to-end: clean boot, single
+port 5000, no import errors; code scan + document scan both produce findings and PDF/CSV reports; sanitized
+file downloads. README.md + FEATURES.md updated to describe the unified product. **Phase 4 (shared AI router)
+was skipped** — `deepsec/ai/` is still in place (skeleton), and `ai_fixer.py` still calls Claude directly;
+unifying them remains the one open follow-up.
 Update this line as each phase completes.
 
 ## Key Rules

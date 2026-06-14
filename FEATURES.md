@@ -1,6 +1,11 @@
-# 🚀 AppSec Orchestrator - AI-Powered Security Scanner & Fixer
+# 🚀 AppSec Orchestrator - Unified Two-Engine Security Platform
 
-A complete security scanning and auto-fixing platform that uses **AI to fix any code vulnerability** - not just pattern-matched issues.
+A complete security platform with **two scan engines behind one login, dashboard, and findings view**:
+
+- **🧑‍💻 Code engine (AppSec)** — scans uploaded source code for vulnerabilities (secrets, SQL/command injection, dangerous functions, vulnerable dependencies) and **uses AI to fix any code vulnerability**, not just pattern-matched ones.
+- **📑 Document engine (DeepSec)** — analyzes uploaded documents (PDF, DOCX, XLSX, PPTX, ZIP, images) for hidden malware, payloads, shellcode, embedded objects and indicators of compromise, with threat-intelligence enrichment (threat family, MITRE technique, attack chain) and a sanitized copy of the file.
+
+Both engines write to the **same `Scan → Finding → Report` data model** (distinguished by `Scan.scan_type` = `"code"` | `"document"`), so document scans ride the existing findings UI, reporting and audit log for free. Document findings are analysis-only (`fixable=False`) and are never routed through the code auto-fixer.
 
 ## ✨ What's New (6 Major Upgrades)
 
@@ -79,11 +84,21 @@ python run.py
 
 ## 🔑 Features by Category
 
-### 🔍 Security Scanner
+### 🔍 Code Security Scanner
 - Detects: Hardcoded secrets, SQL injection, XSS, command injection, eval/exec, pickle, dangerous functions
 - Supports: Python, JavaScript, TypeScript, Java, PHP, Ruby, Go, C/C#, SQL, Bash
 - Smart filtering: Skips .venv, node_modules, .git, __pycache__, etc.
 - Detailed reporting: File, line number, vulnerable code snippet
+
+### 📑 Document Malware Scanner (DeepSec engine)
+- **Upload a document** (PDF, DOCX, XLSX, PPTX, ZIP, PNG/JPG) at **Documents → Scan Document**
+- Detects: embedded payloads, shellcode, hidden/obfuscated code, suspicious APIs, PowerShell & exploit
+  indicators, malware signatures, YARA matches, embedded files/objects, IOCs (URLs, IPs)
+- **Threat intelligence**: threat family, MITRE technique, attack chain, reputation, exploitability and an
+  executive summary — folded into the scan summary and the downloadable JSON report
+- **Sanitized copy**: a cleaned version of the document is produced and downloadable as a report artifact
+- Results open in the **same findings view** as code scans; findings are analysis-only (no auto-fix)
+- Severity/CVSS are mapped per indicator (e.g. Payload/Shellcode/YARA → critical, Embedded File → high)
 
 ### 🛠️ Auto-Fixer
 #### AI-Based (Falls back from pattern matcher)
@@ -127,13 +142,19 @@ appsec_final/
 │   │   └── ...
 │   │
 │   ├── services/
-│   │   ├── scanner/                # Pattern-based security scanning
+│   │   ├── scanner/                # Pattern-based code security scanning
+│   │   ├── docscan/                # 🆕 DeepSec document/malware engine
+│   │   │   ├── adapter.py          #   scan_document() → AppSec Finding contract
+│   │   │   ├── scanners/           #   pdf/docx/xlsx/pptx/zip/image scanners
+│   │   │   ├── extractors/         #   payload/shellcode/embedded-file extraction
+│   │   │   ├── intelligence/       #   MITRE, threat family, attack chain, CVE
+│   │   │   └── sanitizers/         #   produce cleaned copies of documents
 │   │   ├── fixer/
-│   │   │   ├── ai_fixer.py         # 🆕 Claude API-based fixing
+│   │   │   ├── ai_fixer.py         # Claude API-based fixing (code only)
 │   │   │   ├── auto_fixer.py       # Pattern-based quick fixes
-│   │   │   ├── zip_exporter.py     # 🆕 ZIP creation for download
+│   │   │   ├── zip_exporter.py     # ZIP creation for download
 │   │   │   └── ...
-│   │   ├── reporter/               # PDF/CSV generation
+│   │   ├── reporter/               # PDF/CSV generation (both engines)
 │   │   └── ...
 │   │
 │   ├── rules/                      # Detection rule definitions (JSON)
@@ -168,11 +189,16 @@ DATABASE_URL=sqlite:///...          # Custom database
 
 ### API Reference
 
-#### Scan Endpoints
-- `POST /api/projects/<id>/scans` - Start new scan
+#### Code Scan Endpoints
+- `POST /api/projects/<id>/scans` - Start new code scan (`scan_type="code"`)
 - `GET /api/projects/<id>/scans` - List project scans
-- `GET /api/scans/<id>` - Get scan details + findings
-- `GET /api/scans/<id>/download-fixed` - 🆕 Download fixed ZIP
+- `GET /api/scans/<id>` - Get scan details + findings (shared by both engines)
+- `GET /api/scans/<id>/download-fixed` - Download fixed ZIP
+
+#### Document Scan Endpoints
+- `POST /api/docscans` - 🆕 Upload + scan a document (multipart `file`); creates a `scan_type="document"`
+  scan under the per-user "Documents" project, with `json` + `sanitized` reports. Returns the scan;
+  results render at `/scan-detail?id=<scan_id>`.
 
 #### Fix Endpoints
 - `POST /api/findings/<id>/fix-preview` - 🆕 Generate AI fix
