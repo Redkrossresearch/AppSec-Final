@@ -13,10 +13,14 @@ Next: Phase 3 — `scan_type` column + `backend/api/docscans.py` route + upload 
 Update this line as each phase completes.
 
 ## Key Rules
+
 - The Finding dict contract is the one clean seam — never break it
 - Do NOT route document findings through the code auto-fixer
 - Do NOT modify instance/appsec.db directly — drop and recreate it
 - fixable=False for all document findings from DeepSec
+- sanitize_pdf() currently writes to relative `sanitized/pdf/` at repo root —
+  Phase 3 must route sanitized output to `reports/<scan_id>/` instead
+- Add `sanitized/` to .gitignore before committing any scan artifacts 
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
