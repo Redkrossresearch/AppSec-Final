@@ -13,30 +13,103 @@ Both engines write to the same `Scan → Finding → Report` model, distinguishe
 code auto-fixer. This is the result of merging the standalone DeepSec document scanner into AppSec as a
 service package — see [MERGE_STRATEGY.md](MERGE_STRATEGY.md) for the full plan and rationale.
 
-## Quick start
+## Installation & Setup
+
+### Prerequisites
+
+- **Python 3.10+** ([download](https://www.python.org/downloads/))
+- **Git** ([download](https://git-scm.com/download/win))
+- **~230 MB disk space** (130 MB if Python is already installed)
+
+### Step 1: Clone the Repository
 
 ```powershell
-# 1. Create & activate a virtual environment
-python -m venv .venv
-.venv\Scripts\activate
-
-# 2. Install dependencies (AppSec + DeepSec document libs)
-pip install -r requirements.txt
-
-# 3. Configure
-Copy-Item .env.example .env
-#   set APP_SECRET_KEY; CLAUDE_API_KEY is optional (only the AI code-fixer needs it —
-#   set ENABLE_AI_FIXER=0 to run without a key). The document engine needs no API key.
-
-# 4. Run (dev server)
-python run.py            # http://127.0.0.1:5000
+git clone https://github.com/TanmayKamble004/AppSec-Final.git
+cd AppSec-Final
 ```
 
-The SQLite database (`instance/appsec.db`) and runtime directories (`scans/`, `reports/`, `uploads/`,
-`logs/`) are created automatically on first startup. There is no separate build, migration or test step.
+### Step 2: Create a Virtual Environment
 
-> **Note:** running via `python run.py` does **not** load `.env` (the app reads real environment variables,
-> not the file). Set config via your shell environment, or export the values before launching.
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+You should see `(.venv)` in your terminal prompt after activation.
+
+### Step 3: Install Dependencies
+
+```powershell
+pip install -r requirements.txt
+```
+
+This installs Flask, SQLAlchemy, Anthropic SDK, document parsing libraries, and all other dependencies (~120 MB).
+
+### Step 4: Configure Environment
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Edit `.env` and set:
+- **`APP_SECRET_KEY`** — Generate a random secret (required for session security)
+  ```powershell
+  python -c "import secrets; print(secrets.token_hex(32))"
+  ```
+  Paste the output as `APP_SECRET_KEY` value.
+
+- **`CLAUDE_API_KEY`** — (Optional) Set only if using AI code-fixer. Get from [console.anthropic.com](https://console.anthropic.com)
+  - If not set, the app runs fine with pattern-based auto-fixer only. Set `ENABLE_AI_FIXER=0` to disable AI fixer.
+
+- **Other settings** — Leave defaults unless you need a custom database path or port.
+
+### Step 5: Run the Application
+
+```powershell
+python run.py
+```
+
+Open your browser to **`http://127.0.0.1:5000`** — you should see the login page.
+
+### First-Time Setup
+
+The database and runtime directories are created automatically on first startup:
+- `instance/appsec.db` — SQLite database
+- `scans/`, `uploads/`, `reports/`, `logs/` — runtime directories
+
+There is no separate migration or init command needed.
+
+### Verify Installation
+
+1. Navigate to `http://127.0.0.1:5000`
+2. Register a new account
+3. Upload a test project ZIP or try document scanning
+4. Run a scan and verify findings appear
+
+### Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| `python: command not found` | Python not installed or not in PATH. Reinstall and check "Add Python to PATH" |
+| `ModuleNotFoundError: No module named 'flask'` | Activate venv: `.venv\Scripts\activate` and re-run `pip install -r requirements.txt` |
+| Port 5000 already in use | Change port: `python run.py --port 5001` or kill the process using port 5000 |
+| `.env` not loading | `run.py` reads environment variables, not the file. Export values: `$env:APP_SECRET_KEY="value"; python run.py` |
+
+> **Note:** running via `python run.py` does **not** load `.env` automatically (the app reads real environment variables,
+> not the file). Export environment variables before launching, or set them in your shell profile.
+
+## Quick Start (Summary)
+
+```powershell
+git clone https://github.com/TanmayKamble004/AppSec-Final.git
+cd AppSec-Final
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+Copy-Item .env.example .env
+# Edit .env and set APP_SECRET_KEY
+python run.py            # http://127.0.0.1:5000
+```
 
 ## Using the two engines
 
