@@ -377,8 +377,11 @@ YARA Matches: {len(yara_results)}
             "value": summary
         })
 
-        # Sanitized File
-        safe_file = sanitize_pdf(file_path, output_folder=sanitized_dir)
+        # Sanitized File — sanitize_pdf now returns {"output_file", "removed"}; the
+        # emitted finding keeps its {type, value=path} shape so the adapter mapping is
+        # unchanged. The removal report rides along for provable-sanitization checks.
+        sanitize_result = sanitize_pdf(file_path, output_folder=sanitized_dir)
+        safe_file = sanitize_result.get("output_file")
         findings.append({
             "type": "Sanitized File",
             "value": safe_file
