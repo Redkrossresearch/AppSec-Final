@@ -80,3 +80,7 @@ project_tree.txt
 .DS_Store
 Thumbs.db
 desktop.ini
+
+*.zip
+docs/today_work_summary.pdf
+
