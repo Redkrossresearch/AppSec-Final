@@ -150,3 +150,4 @@ User → Project → Scan (scan_type: code | document) → Finding → (Fix, cod
 Both engines are functional and share the scan/finding/report pipeline. The shared multi-provider AI layer
 (unifying the code-fixer and document AI summary) is a planned follow-up (Phase 4 of the merge); today the
 AI code-fixer uses Claude directly and the document engine's analysis runs without requiring an API key.
+DarshanShirsat
