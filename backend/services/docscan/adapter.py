@@ -22,6 +22,10 @@ import re
 from pathlib import Path
 
 from backend.services.risk.risk_calculator import calculate_risk
+from backend.services.docscan.taxonomy import (
+    THREAT_TYPES as _THREAT_TYPES,
+    METADATA_TYPES as _METADATA_TYPES,
+)
 from backend.services.docscan.scanners.pdf_scanner import scan_pdf
 from backend.services.docscan.scanners.docx_scanner import scan_docx
 from backend.services.docscan.scanners.xlsx_scanner import scan_xlsx
@@ -46,41 +50,9 @@ _DISPATCH = {
     ".bmp": scan_image,
 }
 
-# DeepSec "type" labels that are genuine threat indicators -> (severity, cvss).
-# Anything not listed here and not in _METADATA_TYPES is treated as a low-severity
-# indicator so no raw finding is silently dropped.
-_THREAT_TYPES = {
-    "Payload": ("critical", 9.3),
-    "Shellcode": ("critical", 9.5),
-    "Shellcode Indicator": ("critical", 9.0),
-    "Exploit Indicator": ("critical", 9.1),
-    "Malware Signature": ("critical", 9.4),
-    "YARA Match": ("critical", 9.2),
-    "Embedded File": ("high", 8.2),
-    "Embedded Object": ("high", 8.0),
-    "Hidden Code": ("high", 8.4),
-    "PowerShell Indicator": ("high", 8.1),
-    "Persistence": ("high", 7.8),
-    "Command": ("high", 7.6),
-    "High Risk": ("high", 7.5),
-    "Suspicious API": ("medium", 6.0),
-    "Suspicious": ("medium", 5.5),
-    "Suspicious Content": ("medium", 5.3),
-    "Behavior": ("medium", 5.0),
-    "URL": ("low", 3.5),
-    "IP Address": ("low", 3.2),
-}
-
-# DeepSec "type" labels that are scan-level context, not individual findings.
-# These are folded into the summary (and the threat-context block on each finding).
-_METADATA_TYPES = {
-    "File Name", "Pages", "Paragraphs", "Slides", "Sheets", "Sheet",
-    "Image Format", "Dimensions", "Color Mode", "Files Inside ZIP", "Contained File",
-    "SHA256", "Metadata", "URLs Found", "Statistics", "Total Findings",
-    "Risk Score", "Confidence", "Exploitability", "Threat Family",
-    "MITRE Technique", "Attack Chain", "Reputation", "Executive Summary",
-    "Sanitized File", "Text Found",
-}
+# The threat-vs-metadata taxonomy (_THREAT_TYPES / _METADATA_TYPES) now lives in
+# backend.services.docscan.taxonomy so the adapter and confidence_engine share one
+# definition; they are imported above under their original private names.
 
 # Metadata labels folded into each finding's description so the intelligence travels
 # with the finding (MERGE_STRATEGY.md sec 5, step 9).
