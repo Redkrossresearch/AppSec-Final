@@ -14,5 +14,8 @@ openpyxl==3.1.5
 python-pptx==1.0.2
 Pillow>=11.0            # reportlab already pulls a 12.x Pillow; range avoids a downgrade
 requests>=2.32,<3.0
-yara-python==4.5.4
+# NOTE: yara-python removed — nothing in this codebase imports `yara`.
+# The docscan "YARA" scanner (backend/services/docscan/scanners/yara_scanner.py)
+# is pure-Python string matching. Re-add yara-python only if real YARA rule
+# support is implemented (Windows: use Python <= 3.13 for prebuilt wheels).
 pikepdf>=9.0,<10.0      # structural PDF sanitizer: parse-and-rebuild (replaces regex approach)
