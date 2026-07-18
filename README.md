@@ -17,7 +17,7 @@ service package — see [MERGE_STRATEGY.md](MERGE_STRATEGY.md) for the full plan
 
 ### Prerequisites
 
-- **Python 3.10+** ([download](https://www.python.org/downloads/))
+- **Python 3.10–3.13** — 3.13 recommended; 3.14 is untested ([download](https://www.python.org/downloads/))
 - **Git** ([download](https://git-scm.com/download/win))
 - **~230 MB disk space** (130 MB if Python is already installed)
 
