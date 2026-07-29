@@ -1,7 +1,13 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent  # project root (appsec_final/)
+
+# Load .env before the Config class body runs — its os.getenv() calls are evaluated
+# at import time. Pinned to BASE_DIR so it resolves regardless of the working directory.
+load_dotenv(BASE_DIR / ".env")
 
 
 class Config:
