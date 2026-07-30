@@ -17,25 +17,36 @@ service package — see [MERGE_STRATEGY.md](MERGE_STRATEGY.md) for the full plan
 
 ### Prerequisites
 
-- **Python 3.10–3.13** — 3.13 recommended; 3.14 is untested ([download](https://www.python.org/downloads/))
+- **Python 3.10–3.14** — 3.13 and 3.14 are both verified (Windows 10 and 11); tick **"Add python.exe to PATH"** in the installer ([download](https://www.python.org/downloads/))
 - **Git** ([download](https://git-scm.com/download/win))
 - **~230 MB disk space** (130 MB if Python is already installed)
 
 ### Step 1: Clone the Repository
 
 ```powershell
-git clone https://github.com/TanmayKamble004/AppSec-Final.git
+git clone https://github.com/Redkrossresearch/AppSec-Final.git
 cd AppSec-Final
 ```
 
 ### Step 2: Create a Virtual Environment
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\activate
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
 
 You should see `(.venv)` in your terminal prompt after activation.
+
+> **PowerShell notes.** The `.\` prefix and the `.ps1` extension are both required — without them
+> PowerShell reports `The module '.venv' could not be loaded`. If you instead see *"running scripts
+> is disabled on this system"*, allow scripts for your user only (no admin needed):
+>
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
+>
+> In `cmd.exe`, use `.venv\Scripts\activate.bat` instead. You can also skip activation entirely and
+> call the interpreter directly: `.venv\Scripts\python.exe run.py`.
 
 ### Step 3: Install Dependencies
 
@@ -91,7 +102,7 @@ There is no separate migration or init command needed.
 | Issue | Solution |
 |-------|----------|
 | `python: command not found` | Python not installed or not in PATH. Reinstall and check "Add Python to PATH" |
-| `ModuleNotFoundError: No module named 'flask'` | Activate venv: `.venv\Scripts\activate` and re-run `pip install -r requirements.txt` |
+| `ModuleNotFoundError: No module named 'flask'` | Activate venv: `.\.venv\Scripts\Activate.ps1` and re-run `pip install -r requirements.txt` |
 | Port 5000 already in use | Change port: `python run.py --port 5001` or kill the process using port 5000 |
 | `.env` not loading | `run.py` reads environment variables, not the file. Export values: `$env:APP_SECRET_KEY="value"; python run.py` |
 
@@ -101,10 +112,10 @@ There is no separate migration or init command needed.
 ## Quick Start (Summary)
 
 ```powershell
-git clone https://github.com/TanmayKamble004/AppSec-Final.git
+git clone https://github.com/Redkrossresearch/AppSec-Final.git
 cd AppSec-Final
-python -m venv .venv
-.venv\Scripts\activate
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 Copy-Item .env.example .env
 # Edit .env and set APP_SECRET_KEY
