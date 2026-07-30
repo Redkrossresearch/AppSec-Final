@@ -105,3 +105,41 @@ window.App = {
     return true;
   }
 };
+// =========================
+// Security Tip of the Day
+// =========================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const tips = [
+        "Never hardcode API keys in your source code.",
+        "Validate and sanitize all user input.",
+        "Use parameterized SQL queries to prevent SQL Injection.",
+        "Keep all dependencies updated regularly.",
+        "Enable HTTPS for secure communication.",
+        "Use strong passwords and Multi-Factor Authentication."
+    ];
+
+    const tipElement = document.getElementById("dailyTip");
+
+    if (tipElement) {
+        const randomTip = tips[Math.floor(Math.random() * tips.length)];
+        tipElement.textContent = randomTip;
+    }
+
+});
+// Copy Security Tip
+document.querySelectorAll(".copy-btn").forEach(button => {
+    button.addEventListener("click", () => {
+        const tip = button.dataset.tip;
+
+        navigator.clipboard.writeText(tip);
+
+        const original = button.textContent;
+        button.textContent = "✅ Copied!";
+
+        setTimeout(() => {
+            button.textContent = original;
+        }, 2000);
+    });
+});

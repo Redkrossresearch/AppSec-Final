@@ -188,3 +188,95 @@ pre.diff .del { color: #ff8f9e; }
   .content-header { flex-direction: column; }
   table { display: block; overflow-x: auto; }
 }
+/* ===========================
+   Security Tips Section
+=========================== */
+
+.security-tips{
+    margin-top:70px;
+    padding:60px 30px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+}
+
+.security-tips h2{
+    text-align:center;
+    font-size:34px;
+    color:var(--accent);
+    margin-bottom:12px;
+}
+
+.tips-subtitle{
+    text-align:center;
+    color:var(--muted);
+    max-width:700px;
+    margin:0 auto 40px;
+}
+
+.tips-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.tip-card{
+    background:var(--panel-soft);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:24px;
+    transition:.3s;
+}
+
+.tip-card:hover{
+    transform:translateY(-6px);
+    border-color:var(--accent);
+    box-shadow:0 10px 20px rgba(32,211,155,.15);
+}
+
+.tip-card h3{
+    color:var(--accent);
+    margin-bottom:12px;
+}
+
+.tip-card p{
+    color:var(--muted);
+    line-height:1.6;
+}
+.copy-btn{
+    margin-top:15px;
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:var(--accent);
+    color:#051510;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.copy-btn:hover{
+    opacity:.9;
+    transform:scale(1.02);
+}
+#topBtn{
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    background: #20d39b;
+    color: #051510;
+    font-size: 22px;
+    cursor: pointer;
+    display: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,.3);
+    transition: .3s;
+}
+
+#topBtn:hover{
+    transform: scale(1.1);
+}
