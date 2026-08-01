@@ -42,4 +42,10 @@ def dashboard():
         "security_score": security_score,
         "severity": {key: count for key, count in severity_rows},
         "recent_scans": [s.to_dict() for s in latest],
+
+        "system_health": {
+            "backend": "Online",
+            "database": "Connected",
+            "scanner": "Ready"
+        }
     })
