@@ -12,7 +12,10 @@ top_files_bp = Blueprint("top_files", __name__, url_prefix="/api/top-files")
 @login_required
 def top_vulnerable_files(project_id):
     project = Project.query.filter_by(id=project_id, owner_id=current_user.id).first_or_404()
-    limit = int(request.args.get("limit", 10))
+    try:
+        limit = int(request.args.get("limit", 10))
+    except ValueError:
+        return jsonify({"error": "limit must be an integer."}), 400
 
     findings = (
         Finding.query.join(Scan)

@@ -7,6 +7,6 @@
   "extensions": [".py", ".env", ".json", ".yml", ".yaml"],
   "severity": "medium",
   "cvss_score": 5.3,
-  "fixable": true,
+  "fixable": false,
   "recommendation": "Restrict ALLOWED_HOSTS to known domains and bind to a specific interface, not 0.0.0.0, in production."
 }

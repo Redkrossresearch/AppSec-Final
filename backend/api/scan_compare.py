@@ -20,6 +20,9 @@ def compare_scans(old_scan_id, new_scan_id):
     old_scan = owned_scan(old_scan_id)
     new_scan = owned_scan(new_scan_id)
 
+    if old_scan.project_id != new_scan.project_id:
+        return jsonify({"error": "Scans must belong to the same project."}), 400
+
     def key(f):
         return (f.rule_id, f.file_path, f.line_number)
 

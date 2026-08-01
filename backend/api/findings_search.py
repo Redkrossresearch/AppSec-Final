@@ -12,9 +12,15 @@ findings_search_bp = Blueprint("findings_search", __name__, url_prefix="/api/fin
 def search_findings():
     query = Finding.query.join(Scan).join(Project).filter(Project.owner_id == current_user.id)
     if request.args.get("scan_id"):
-        query = query.filter(Finding.scan_id == int(request.args["scan_id"]))
+        try:
+            scan_id = int(request.args["scan_id"])
+        except ValueError:
+            return jsonify({"error": "scan_id must be an integer."}), 400
+        query = query.filter(Finding.scan_id == scan_id)
     if request.args.get("severity"):
         query = query.filter(Finding.severity == request.args["severity"])
+    if request.args.get("status"):
+        query = query.filter(Finding.status == request.args["status"])
     if request.args.get("q"):
         term = f"%{request.args['q']}%"
         query = query.filter(db.or_(Finding.title.ilike(term), Finding.description.ilike(term)))

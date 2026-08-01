@@ -7,6 +7,6 @@
   "extensions": [".py", ".js"],
   "severity": "high",
   "cvss_score": 7.4,
-  "fixable": true,
+  "fixable": false,
   "recommendation": "Remove verify=False and use properly configured trusted certificates."
 }

@@ -156,6 +156,10 @@ class AuditLog(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
 
     def to_dict(self):
+        created_at = self.created_at
+        if created_at.tzinfo is None:
+            created_at = created_at.replace(tzinfo=timezone.utc)
         return {"id": self.id, "action": self.action, "entity_type": self.entity_type,
                 "entity_id": self.entity_id, "details": self.details,
-                "created_at": self.created_at.isoformat()}
+                "created_at": created_at.isoformat()}
+                
