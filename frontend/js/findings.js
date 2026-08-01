@@ -1,11 +1,22 @@
 async function loadFindings() {
   const severity = document.querySelector("#severityFilter")?.value || "";
   const status = document.querySelector("#statusFilter")?.value || "";
+  const search = document.querySelector("#searchBox")?.value || "";
   let query = [];
   if (severity) query.push(`severity=${encodeURIComponent(severity)}`);
   if (status) query.push(`status=${encodeURIComponent(status)}`);
-  const qs = query.length ? "?" + query.join("&") : "";
-  const { findings } = await App.api(`/api/findings${qs}`);
+
+  let findings;
+  if (search) {
+    query.push(`q=${encodeURIComponent(search)}`);
+    const qs = "?" + query.join("&");
+    const result = await App.api(`/api/findings-search${qs}`);
+    findings = result.findings;
+  } else {
+    const qs = query.length ? "?" + query.join("&") : "";
+    const result = await App.api(`/api/findings${qs}`);
+    findings = result.findings;
+  }
 
   const count = document.querySelector("#findingCount");
   if (count) count.textContent = `${findings.length} finding${findings.length !== 1 ? "s" : ""}`;
@@ -29,9 +40,22 @@ async function loadFindings() {
     : `<tr><td colspan="5" class="empty">No findings match the current filters.</td></tr>`;
 }
 
+function exportFindingsCsv() {
+  const severity = document.querySelector("#severityFilter")?.value || "";
+  let query = [];
+  if (severity) query.push(`severity=${encodeURIComponent(severity)}`);
+  const qs = query.length ? "?" + query.join("&") : "";
+  window.location.href = `/api/findings-export${qs}`;
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   if (!(await App.setupPage("findings"))) return;
   await loadFindings();
   document.querySelector("#severityFilter").onchange = loadFindings;
   document.querySelector("#statusFilter").onchange = loadFindings;
+  document.querySelector("#searchBox").addEventListener("input", () => {
+    clearTimeout(window._searchDebounce);
+    window._searchDebounce = setTimeout(loadFindings, 400);
+  });
+  document.querySelector("#exportCsvBtn").onclick = exportFindingsCsv;
 });
