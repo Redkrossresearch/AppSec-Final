@@ -1,0 +1,12 @@
+{
+  "id": "CFG002",
+  "category": "configuration",
+  "title": "TLS certificate verification disabled",
+  "description": "An HTTP request disables TLS certificate verification, allowing man-in-the-middle attacks.",
+  "pattern": "verify\\s*=\\s*False",
+  "extensions": [".py", ".js"],
+  "severity": "high",
+  "cvss_score": 7.4,
+  "fixable": true,
+  "recommendation": "Remove verify=False and use properly configured trusted certificates."
+}

@@ -1,0 +1,12 @@
+{
+  "id": "CFG001",
+  "category": "configuration",
+  "title": "Debug mode enabled",
+  "description": "DEBUG is set to True, which can leak stack traces and secrets in production.",
+  "pattern": "DEBUG\\s*=\\s*True",
+  "extensions": [".py", ".env", ".json", ".yml", ".yaml"],
+  "severity": "medium",
+  "cvss_score": 5.3,
+  "fixable": true,
+  "recommendation": "Disable debug mode in production and load it from an environment variable instead."
+}

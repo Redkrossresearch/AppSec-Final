@@ -1,0 +1,12 @@
+{
+  "id": "CFG003",
+  "category": "configuration",
+  "title": "Wildcard allowed hosts or bind address",
+  "description": "The application binds to all interfaces or allows any host, widening the attack surface.",
+  "pattern": "(ALLOWED_HOSTS\\s*=\\s*\\[\\s*['\"]\\*['\"]\\s*\\]|0\\.0\\.0\\.0)",
+  "extensions": [".py", ".env", ".json", ".yml", ".yaml"],
+  "severity": "medium",
+  "cvss_score": 5.3,
+  "fixable": true,
+  "recommendation": "Restrict ALLOWED_HOSTS to known domains and bind to a specific interface, not 0.0.0.0, in production."
+}
