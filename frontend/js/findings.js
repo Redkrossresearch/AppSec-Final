@@ -42,8 +42,12 @@ async function loadFindings() {
 
 function exportFindingsCsv() {
   const severity = document.querySelector("#severityFilter")?.value || "";
+  const status = document.querySelector("#statusFilter")?.value || "";
+  const search = document.querySelector("#searchBox")?.value || "";
   let query = [];
   if (severity) query.push(`severity=${encodeURIComponent(severity)}`);
+  if (status) query.push(`status=${encodeURIComponent(status)}`);
+  if (search) query.push(`q=${encodeURIComponent(search)}`);
   const qs = query.length ? "?" + query.join("&") : "";
   window.location.href = `/api/findings-export${qs}`;
 }

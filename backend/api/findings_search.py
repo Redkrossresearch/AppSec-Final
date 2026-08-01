@@ -19,6 +19,8 @@ def search_findings():
         query = query.filter(Finding.scan_id == scan_id)
     if request.args.get("severity"):
         query = query.filter(Finding.severity == request.args["severity"])
+    if request.args.get("status"):
+        query = query.filter(Finding.status == request.args["status"])
     if request.args.get("q"):
         term = f"%{request.args['q']}%"
         query = query.filter(db.or_(Finding.title.ilike(term), Finding.description.ilike(term)))

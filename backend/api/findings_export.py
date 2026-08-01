@@ -4,6 +4,7 @@ import io
 from flask import Blueprint, Response, jsonify, request
 from flask_login import current_user, login_required
 
+from backend.extensions import db
 from backend.models import Finding, Project, Scan
 
 findings_export_bp = Blueprint("findings_export", __name__, url_prefix="/api/findings-export")
@@ -21,6 +22,11 @@ def export_findings():
         query = query.filter(Finding.scan_id == scan_id)
     if request.args.get("severity"):
         query = query.filter(Finding.severity == request.args["severity"])
+    if request.args.get("status"):
+        query = query.filter(Finding.status == request.args["status"])
+    if request.args.get("q"):
+        term = f"%{request.args['q']}%"
+        query = query.filter(db.or_(Finding.title.ilike(term), Finding.description.ilike(term)))
     findings = query.order_by(Finding.cvss_score.desc(), Finding.id.desc()).all()
 
     output = io.StringIO()
