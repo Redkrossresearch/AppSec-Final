@@ -7,6 +7,15 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from backend.extensions import db
 
 
+def _iso_utc(value):
+    """SQLite drops tzinfo on write; re-attach UTC so browsers don't read timestamps as local."""
+    if value is None:
+        return None
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
+    return value.isoformat()
+
+
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -25,7 +34,7 @@ class User(UserMixin, db.Model):
 
     def to_dict(self):
         return {"id": self.id, "email": self.email, "name": self.name, "role": self.role,
-                "created_at": self.created_at.isoformat()}
+                "created_at": _iso_utc(self.created_at)}
 
 
 class Project(db.Model):
@@ -42,7 +51,7 @@ class Project(db.Model):
     def to_dict(self):
         return {"id": self.id, "name": self.name, "description": self.description,
                 "path": self.path, "owner_id": self.owner_id,
-                "created_at": self.created_at.isoformat(), "scan_count": len(self.scans)}
+                "created_at": _iso_utc(self.created_at), "scan_count": len(self.scans)}
 
 
 class Scan(db.Model):
@@ -72,8 +81,8 @@ class Scan(db.Model):
                 "scan_type": self.scan_type,
                 "total_files": self.total_files, "finding_count": len(self.findings),
                 "summary": self.summary, "error": self.error,
-                "started_at": self.started_at.isoformat(),
-                "completed_at": self.completed_at.isoformat() if self.completed_at else None}
+                "started_at": _iso_utc(self.started_at),
+                "completed_at": _iso_utc(self.completed_at)}
 
 
 class Finding(db.Model):
@@ -123,9 +132,9 @@ class Fix(db.Model):
     def to_dict(self, include_contents=False):
         data = {"id": self.id, "finding_id": self.finding_id, "status": self.status,
                 "explanation": self.explanation, "diff": self.diff,
-                "created_at": self.created_at.isoformat(),
-                "applied_at": self.applied_at.isoformat() if self.applied_at else None,
-                "rolled_back_at": self.rolled_back_at.isoformat() if self.rolled_back_at else None}
+                "created_at": _iso_utc(self.created_at),
+                "applied_at": _iso_utc(self.applied_at),
+                "rolled_back_at": _iso_utc(self.rolled_back_at)}
         if include_contents:
             data.update({"original_content": self.original_content, "fixed_content": self.fixed_content})
         return data
@@ -142,7 +151,7 @@ class Report(db.Model):
 
     def to_dict(self):
         return {"id": self.id, "scan_id": self.scan_id, "format": self.format,
-                "output_path": self.output_path, "created_at": self.created_at.isoformat()}
+                "output_path": self.output_path, "created_at": _iso_utc(self.created_at)}
 
 
 class AuditLog(db.Model):
@@ -156,10 +165,6 @@ class AuditLog(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
 
     def to_dict(self):
-        created_at = self.created_at
-        if created_at.tzinfo is None:
-            created_at = created_at.replace(tzinfo=timezone.utc)
         return {"id": self.id, "action": self.action, "entity_type": self.entity_type,
                 "entity_id": self.entity_id, "details": self.details,
-                "created_at": created_at.isoformat()}
-                
+                "created_at": _iso_utc(self.created_at)}
