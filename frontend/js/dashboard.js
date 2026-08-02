@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelector("#scansMetric").textContent = data.scan_count;
     document.querySelector("#findingsMetric").textContent = data.open_findings;
     document.querySelector("#fixedMetric").textContent = data.fixed_findings;
-
+  
     const sev = data.severity || {};
     const max = Math.max(...["critical","high","medium","low"].map(k => sev[k]||0), 1);
     document.querySelector("#severityBars").innerHTML = ["critical","high","medium","low"].map(level => {

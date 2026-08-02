@@ -1,0 +1,19 @@
+{
+  "id": "CFG005",
+  "category": "configuration",
+  "title": "Debug Mode Enabled",
+  "description": "Application is configured to run in debug mode, which may expose sensitive information in production.",
+  "pattern": "(debug\\s*=\\s*true|debug\\s*=\\s*True|DEBUG\\s*=\\s*True|DEBUG\\s*=\\s*true|app\\.run\\(.*debug\\s*=\\s*True.*\\)|app\\.run\\(.*debug\\s*=\\s*true.*\\))",
+  "extensions": [
+    ".py",
+    ".js",
+    ".env",
+    ".json",
+    ".yml",
+    ".yaml"
+  ],
+  "severity": "high",
+  "cvss_score": 7.5,
+  "fixable": false,
+  "recommendation": "Disable debug mode before deploying to production. Use DEBUG=False or remove debug=True from application startup."
+}
