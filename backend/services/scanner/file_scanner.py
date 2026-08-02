@@ -5,6 +5,7 @@ from backend.services.scanner.dependency_scanner import scan_dependencies
 from backend.services.scanner.pattern_matcher import find_rule_matches
 from backend.services.scanner.rule_engine import RuleEngine
 from backend.utils.file_helpers import read_text_safely
+from backend.utils.validators import PROJECT_FILES_MISSING, project_files_available
 
 
 def _suffix(path):
@@ -29,6 +30,11 @@ def _iter_files(root, allowed_extensions, ignored_dirs, maximum_size):
 
 def scan_project(project_root, rules_dir, allowed_extensions, ignored_dirs, maximum_size):
     root = Path(project_root).resolve()
+    # rglob on a missing directory yields nothing rather than raising, so without this
+    # guard a vanished project would be reported as a clean scan — zero files, zero
+    # findings, status "completed". A false all-clear is the worst failure mode here.
+    if not project_files_available(root):
+        raise FileNotFoundError(PROJECT_FILES_MISSING)
     engine = RuleEngine(rules_dir)
     findings = []
     file_count = 0

@@ -32,17 +32,21 @@ def create_fixed_project_zip(project_path: str, output_path: str, excluded_dirs=
     # Create ZIP with filtered contents
     with ZipFile(output_file, 'w') as zipf:
         for item in project_dir.rglob('*'):
-            # Skip excluded directories
-            if any(excluded in item.parts for excluded in excluded_dirs):
-                continue
-            
-            # Skip hidden files/dirs except .env
-            if any(part.startswith('.') and part not in {'.env', '.gitignore', '.github'} 
-                   for part in item.parts):
-                continue
-            
-            # Add to ZIP
+            # Filter on the path *inside* the project, never the absolute path: uploaded
+            # projects live under UPLOAD_STORAGE ("uploads/<user>/<name>"), so matching
+            # excluded_dirs against item.parts skipped every file and emptied the ZIP.
             arcname = item.relative_to(project_dir)
+
+            # Skip excluded directories
+            if any(excluded in arcname.parts for excluded in excluded_dirs):
+                continue
+
+            # Skip hidden files/dirs except .env
+            if any(part.startswith('.') and part not in {'.env', '.gitignore', '.github'}
+                   for part in arcname.parts):
+                continue
+
+            # Add to ZIP
             if item.is_file():
                 zipf.write(item, arcname)
             elif item.is_dir() and not any(child.is_file() for child in item.rglob('*')):

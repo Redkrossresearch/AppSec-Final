@@ -2,11 +2,13 @@ from datetime import datetime, timezone
 
 from flask import Blueprint, current_app, jsonify, send_file
 from flask_login import current_user, login_required
+from sqlalchemy.orm import selectinload
 
 from backend.extensions import db
 from backend.models import AuditLog, Finding, Project, Scan
 from backend.services.scanner import scan_project
 from backend.services.fixer.zip_exporter import create_fixed_project_zip, get_project_name_for_zip
+from backend.utils.validators import PROJECT_FILES_MISSING, project_files_available
 
 scans_bp = Blueprint("scans", __name__, url_prefix="/api")
 
@@ -65,7 +67,15 @@ def list_scans(project_id):
 @login_required
 def get_scan(scan_id):
     scan = owned_scan(scan_id)
-    return jsonify({"scan": scan.to_dict(), "findings": [f.to_dict() for f in scan.findings]})
+    # Load the findings explicitly so their fixes come back in one batched query;
+    # iterating scan.findings instead makes Finding.to_dict() lazy-load per finding.
+    findings = (
+        Finding.query.filter_by(scan_id=scan.id)
+        .options(selectinload(Finding.fixes))
+        .order_by(Finding.id)
+        .all()
+    )
+    return jsonify({"scan": scan.to_dict(), "findings": [f.to_dict() for f in findings]})
 
 
 @scans_bp.get("/scans/<int:scan_id>/download-fixed")
@@ -79,7 +89,12 @@ def download_fixed_project(scan_id):
     fixed_count = sum(1 for f in scan.findings if f.status == "fixed")
     if fixed_count == 0:
         return jsonify({"error": "No fixes have been applied to this scan yet."}), 400
-    
+
+    # The ZIP is built by re-reading the patched source, so a vanished project is an
+    # explainable 409 rather than the generic 500 below.
+    if not project_files_available(project.path):
+        return jsonify({"error": PROJECT_FILES_MISSING}), 409
+
     try:
         # Create ZIP file
         zip_filename = f"{get_project_name_for_zip(project.name)}_fixed_scan_{scan.id}.zip"
