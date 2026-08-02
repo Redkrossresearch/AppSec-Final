@@ -64,6 +64,13 @@ class Config:
         ".py", ".js", ".ts", ".jsx", ".tsx", ".php", ".java", ".rb",
         ".go", ".sql", ".html", ".env", ".yml", ".yaml", ".json",
         ".xml", ".sh", ".ps1", ".txt", ".cfg", ".ini", ".cs", ".cpp", ".c",
+        # PEM-encoded key/cert material. Without these the scanner skips the file
+        # outright, so SEC013 (private key block) could never fire on a real .pem —
+        # a committed private key, the highest-value secret there is, went unreported.
+        # Binary container formats (.pfx/.p12/.jks/.der) are deliberately excluded:
+        # the engine matches regexes against decoded text, so they need filename-based
+        # detection instead, which the rule schema does not support yet.
+        ".pem", ".key", ".crt", ".cer", ".pub", ".asc",
     }
     SCAN_IGNORED_DIRS = {
         ".git", ".venv", "venv", "node_modules", "__pycache__", ".pytest_cache",
