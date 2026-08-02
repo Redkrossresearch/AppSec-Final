@@ -68,9 +68,9 @@ window.App = {
       sidebar.innerHTML = `
         <a class="brand" href="/dashboard">
           <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="36" height="36" rx="9" fill="#20d39b"/>
-            <path d="M18 7l9 4v8c0 5-4 9-9 10-5-1-9-5-9-10v-8l9-4z" fill="#051510" opacity=".9"/>
-            <path d="M14 18l3 3 5-5" stroke="#20d39b" stroke-width="2" stroke-linecap="round"/>
+            <rect width="36" height="36" rx="9" fill="#ff8f1f"/>
+            <path d="M18 7l9 4v8c0 5-4 9-9 10-5-1-9-5-9-10v-8l9-4z" fill="#1a0e00" opacity=".9"/>
+            <path d="M14 18l3 3 5-5" stroke="#ff8f1f" stroke-width="2" stroke-linecap="round"/>
           </svg>
           <span>AppSec<br><strong>Orchestrator</strong></span>
         </a>

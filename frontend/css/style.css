@@ -1,15 +1,16 @@
 :root {
-  --bg: #07131e;
-  --panel: #0f2233;
-  --panel-soft: #142b3d;
-  --text: #eef5f7;
-  --muted: #8ba5b4;
-  --accent: #20d39b;
-  --accent-dark: #0b966f;
+  --bg: #060b16;
+  --panel: #0d1a2b;
+  --panel-soft: #13233a;
+  --text: #f2f6f9;
+  --muted: #7f93a8;
+  --accent: #ff8f1f;
+  --accent-dark: #e2740c;
+  --accent-soft: rgba(255,143,31,.15);
   --danger: #fa4a60;
   --warning: #ffb040;
   --info: #3d9aff;
-  --line: #1e3a50;
+  --line: #1c3049;
   --radius: 12px;
   color-scheme: dark;
   font-family: "Segoe UI", system-ui, Arial, sans-serif;
@@ -32,6 +33,29 @@ p { line-height: 1.55; }
 .hero h1 { font-size: clamp(38px, 5vw, 60px); line-height: 1.04; letter-spacing: -.5px; margin-bottom: 18px; }
 .hero p { color: var(--muted); font-size: 17px; line-height: 1.6; margin-bottom: 28px; }
 .actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.hero-visual { position: relative; display: grid; place-items: center; min-height: 380px; }
+.hero-glow {
+  position: relative; width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 42%, rgba(255,143,31,.16), transparent 70%);
+  border: 1px solid rgba(255,143,31,.25);
+  display: grid; place-items: center;
+}
+.hero-glow::before {
+  content: ""; position: absolute; inset: 34px; border-radius: 50%;
+  border: 1px solid rgba(255,143,31,.14);
+}
+.hero-glow svg.shield { width: 96px; height: 96px; }
+.hero-icon {
+  position: absolute; width: 46px; height: 46px; border-radius: 12px;
+  background: var(--panel); border: 1px solid var(--line);
+  display: grid; place-items: center; color: var(--accent);
+  box-shadow: 0 8px 20px rgba(0,0,0,.35);
+}
+.hero-icon svg { width: 20px; height: 20px; }
+.hero-icon.i1 { top: -6px; left: 6%; }
+.hero-icon.i2 { top: -6px; right: 6%; }
+.hero-icon.i3 { bottom: -6px; left: 6%; }
+.hero-icon.i4 { bottom: -6px; right: 6%; }
 .workflow { display: grid; gap: 14px; }
 .workflow-item { display: flex; gap: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
 .workflow-item strong { color: var(--accent); font-size: 22px; flex-shrink: 0; }
@@ -47,7 +71,7 @@ p { line-height: 1.55; }
 
 /* ── Buttons ── */
 .button, button {
-  border: 0; border-radius: 9px; background: var(--accent); color: #051510;
+  border: 0; border-radius: 9px; background: var(--accent); color: #1a0e00;
   cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
   font: inherit; font-weight: 700; min-height: 42px; padding: 0 18px; transition: opacity .15s;
 }
@@ -188,6 +212,13 @@ pre.diff .del { color: #ff8f9e; }
   .content-header { flex-direction: column; }
   table { display: block; overflow-x: auto; }
 }
+/* ── Use cases & Pricing ── */
+.use-cases, .pricing { margin-top: 50px; padding: 50px 30px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+.use-cases h2, .pricing h2 { text-align: center; font-size: 30px; margin-bottom: 12px; }
+.pricing-card { width: min(360px, 100%); margin: 30px auto 0; background: var(--panel-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; text-align: center; }
+.pricing-amount { font-size: 44px; font-weight: 800; color: var(--accent); margin: 8px 0 14px; }
+.pricing-amount span { font-size: 16px; font-weight: 500; color: var(--muted); }
+
 /* ===========================
    Security Tips Section
 =========================== */
@@ -250,7 +281,7 @@ pre.diff .del { color: #ff8f9e; }
     border:none;
     border-radius:8px;
     background:var(--accent);
-    color:#051510;
+    color:#1a0e00;
     font-weight:700;
     cursor:pointer;
     transition:.3s;
@@ -268,8 +299,8 @@ pre.diff .del { color: #ff8f9e; }
     height: 50px;
     border: none;
     border-radius: 50%;
-    background: #20d39b;
-    color: #051510;
+    background: var(--accent);
+    color: #1a0e00;
     font-size: 22px;
     cursor: pointer;
     display: none;
