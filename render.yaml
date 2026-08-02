@@ -1,0 +1,30 @@
+# Render blueprint — https://render.com/docs/blueprint-spec
+#
+# One free web service. Deliberately ONE gunicorn worker: the SimpleRateLimiter
+# buckets and the default SQLite database are both per-process, so a second
+# worker would silently double the rate limit and split the DB connection pool.
+# --timeout 300 exists because scanning runs synchronously inside the request
+# thread (see CLAUDE.md) — the gunicorn default of 30s kills large scans.
+services:
+  - type: web
+    name: appsec-orchestrator
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn run:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 300 --access-logfile - --error-logfile -
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.13.4"
+      - key: APP_SECRET_KEY
+        generateValue: true      # Render mints a random value; never commit a real one
+      - key: FLASK_DEBUG
+        value: "0"
+      - key: SESSION_COOKIE_SECURE
+        value: "1"               # Render terminates TLS, so cookies can be HTTPS-only
+      - key: TRUST_PROXY
+        value: "1"               # read the client IP from X-Forwarded-For
+      # AI fix previews call the paid Claude API. Left off so the deploy costs
+      # nothing; set to 1 and add CLAUDE_API_KEY in the dashboard to enable.
+      - key: ENABLE_AI_FIXER
+        value: "0"

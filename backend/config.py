@@ -10,13 +10,41 @@ BASE_DIR = Path(__file__).resolve().parent.parent  # project root (appsec_final/
 load_dotenv(BASE_DIR / ".env")
 
 
+def _database_uri():
+    """Resolve DATABASE_URL, tolerating the legacy ``postgres://`` scheme.
+
+    Hosted Postgres providers (Neon, Supabase, Render) still hand out ``postgres://``
+    URLs, which SQLAlchemy 2.x refuses to parse. With no override, fall back to an
+    absolute SQLite path — a relative one breaks startup on Windows.
+    """
+    url = os.getenv("DATABASE_URL", "").strip()
+    if not url:
+        return f"sqlite:///{(BASE_DIR / 'instance' / 'appsec.db').as_posix()}"
+    if url.startswith("postgres://"):
+        url = "postgresql://" + url[len("postgres://"):]
+    return url
+
+
 class Config:
     SECRET_KEY = os.getenv("APP_SECRET_KEY", "dev-secret-change-in-production-xyz")
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        "DATABASE_URL", f"sqlite:///{(BASE_DIR / 'instance' / 'appsec.db').as_posix()}"
-    )
+    SQLALCHEMY_DATABASE_URI = _database_uri()
+    # Free-tier Postgres (Neon, Supabase) autosuspends when idle and drops pooled
+    # connections without telling the client; pool_pre_ping turns what would be a
+    # "server closed the connection unexpectedly" 500 on the first request after a
+    # wake-up into a transparent reconnect. Both options are no-ops on SQLite.
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True, "pool_recycle": 300}
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = os.getenv("FLASK_DEBUG", "0") == "1"
+
+    # Session cookie hardening. SECURE defaults off so plain-HTTP localhost still
+    # works in dev; hosted deployments set SESSION_COOKIE_SECURE=1 (see DEPLOY.md).
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"
+    SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "0") == "1"
+    # Sit behind a hosting proxy (Render, Fly, Cloud Run) that sets X-Forwarded-For.
+    # Off by default: trusting those headers without a proxy in front lets any
+    # client spoof its IP past the rate limiter.
+    TRUST_PROXY = os.getenv("TRUST_PROXY", "0") == "1"
     MAX_SCAN_FILE_SIZE = int(os.getenv("MAX_SCAN_FILE_SIZE", str(512 * 1024)))
     MAX_UPLOAD_SIZE = 200 * 1024 * 1024  # 200MB zip uploads
     MAX_CONTENT_LENGTH = 200 * 1024 * 1024  # Flask request size limit

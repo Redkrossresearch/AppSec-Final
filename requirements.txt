@@ -19,3 +19,10 @@ requests>=2.32,<3.0
 # is pure-Python string matching. Re-add yara-python only if real YARA rule
 # support is implemented (Windows: use Python <= 3.13 for prebuilt wheels).
 pikepdf>=9.0,<10.0      # structural PDF sanitizer: parse-and-rebuild (replaces regex approach)
+
+# ─── Production serving (see DEPLOY.md) ───
+# The Flask dev server in run.py is dev-only; hosts start the app via the Procfile.
+gunicorn>=23.0,<24.0
+# Only used when DATABASE_URL points at Postgres (free Neon/Supabase tier).
+# Harmless on the default SQLite path — SQLAlchemy never loads it.
+psycopg2-binary>=2.9,<3.0

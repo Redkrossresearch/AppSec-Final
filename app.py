@@ -4,6 +4,7 @@ from pathlib import Path
 
 from flask import Blueprint, Flask, jsonify, request, send_from_directory, session
 from flask_login import current_user
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from backend.api import API_BLUEPRINTS
 from backend.config import Config
@@ -60,6 +61,17 @@ def create_app(config_override=None):
     app.config.from_object(Config)
     if config_override:
         app.config.update(config_override)
+
+    if app.config.get("TRUST_PROXY"):
+        # Hosted behind a reverse proxy: without this every visitor shares one
+        # rate-limit bucket (remote_addr is the proxy) and url_for builds http:// links.
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+
+    if not app.config["DEBUG"] and app.config["SECRET_KEY"].startswith("dev-secret"):
+        app.logger.warning(
+            "APP_SECRET_KEY is unset, so the built-in development key is in use. "
+            "Session cookies are forgeable — set APP_SECRET_KEY before exposing this app."
+        )
 
     Path(app.config["SCAN_STORAGE"]).mkdir(parents=True, exist_ok=True)
     Path(app.config["REPORT_STORAGE"]).mkdir(parents=True, exist_ok=True)
