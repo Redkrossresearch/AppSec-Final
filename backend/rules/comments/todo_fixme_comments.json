@@ -1,0 +1,20 @@
+{
+    "id": "TODO_COMMENT",
+    "title": "Sensitive TODO/FIXME Comment",
+    "description": "Developer comment may expose unfinished or insecure code.",
+    "category": "code_quality",
+    "severity": "low",
+    "recommendation": "Remove TODO, FIXME, HACK or BUG comments before production deployment.",
+    "pattern": "(TODO|FIXME|HACK|BUG)",
+    "extensions": [
+        ".py",
+        ".js",
+        ".java",
+        ".php",
+        ".html",
+        ".css",
+        ".ts"
+    ],
+    "cvss_score": 2.5,
+    "fixable": false
+}
