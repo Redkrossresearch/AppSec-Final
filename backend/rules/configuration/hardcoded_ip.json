@@ -1,0 +1,23 @@
+{
+  "id": "CFG004",
+  "category": "configuration",
+  "title": "Hardcoded IP Address",
+  "description": "A hardcoded IPv4 address was found in the source code.",
+  "pattern": "\\b(?:25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(?:\\.(?:25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}\\b",
+  "extensions": [
+    ".py",
+    ".js",
+    ".java",
+    ".php",
+    ".env",
+    ".json",
+    ".yml",
+    ".yaml",
+    ".txt",
+    ".html"
+  ],
+  "severity": "medium",
+  "cvss_score": 5.5,
+  "fixable": false,
+  "recommendation": "Avoid hardcoding IP addresses. Store them in configuration files or environment variables, or use DNS hostnames."
+}

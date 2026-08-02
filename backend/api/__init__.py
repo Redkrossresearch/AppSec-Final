@@ -18,6 +18,7 @@ from backend.api.scans import scans_bp
 from backend.api.top_files import top_files_bp
 from backend.api.users import users_bp
 
+
 API_BLUEPRINTS = [
     auth_bp, dashboard_bp, projects_bp, scans_bp,
     findings_bp, fixes_bp, reports_bp, users_bp, docscans_bp,
