@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_login import current_user, login_required
+from sqlalchemy.orm import selectinload
 
 from backend.models import Finding, Project, Scan
 
@@ -7,9 +8,13 @@ scan_compare_bp = Blueprint("scan_compare", __name__, url_prefix="/api/scan-comp
 
 
 def owned_scan(scan_id):
+    # This helper is only used by compare_scans, which always walks every finding and
+    # serializes a subset — so eager-load the findings and their fixes up front rather
+    # than paying a query per finding in Finding.to_dict().
     return (
         Scan.query.join(Project)
         .filter(Scan.id == scan_id, Project.owner_id == current_user.id)
+        .options(selectinload(Scan.findings).selectinload(Finding.fixes))
         .first_or_404()
     )
 

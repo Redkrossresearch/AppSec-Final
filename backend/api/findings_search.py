@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
+from sqlalchemy.orm import selectinload
 
 from backend.extensions import db
 from backend.models import Finding, Project, Scan
@@ -24,5 +25,10 @@ def search_findings():
     if request.args.get("q"):
         term = f"%{request.args['q']}%"
         query = query.filter(db.or_(Finding.title.ilike(term), Finding.description.ilike(term)))
-    findings = query.order_by(Finding.cvss_score.desc(), Finding.id.desc()).all()
+    # Batch the fixes Finding.to_dict() reads, instead of one query per finding.
+    findings = (
+        query.options(selectinload(Finding.fixes))
+        .order_by(Finding.cvss_score.desc(), Finding.id.desc())
+        .all()
+    )
     return jsonify({"findings": [f.to_dict() for f in findings]})

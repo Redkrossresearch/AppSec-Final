@@ -2,6 +2,8 @@ import json
 from datetime import datetime, timezone
 
 from flask_login import UserMixin
+from sqlalchemy import func, select
+from sqlalchemy.orm import column_property
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from backend.extensions import db
@@ -51,7 +53,7 @@ class Project(db.Model):
     def to_dict(self):
         return {"id": self.id, "name": self.name, "description": self.description,
                 "path": self.path, "owner_id": self.owner_id,
-                "created_at": _iso_utc(self.created_at), "scan_count": len(self.scans)}
+                "created_at": _iso_utc(self.created_at), "scan_count": self.scan_count}
 
 
 class Scan(db.Model):
@@ -79,7 +81,7 @@ class Scan(db.Model):
     def to_dict(self):
         return {"id": self.id, "project_id": self.project_id, "status": self.status,
                 "scan_type": self.scan_type,
-                "total_files": self.total_files, "finding_count": len(self.findings),
+                "total_files": self.total_files, "finding_count": self.finding_count,
                 "summary": self.summary, "error": self.error,
                 "started_at": _iso_utc(self.started_at),
                 "completed_at": _iso_utc(self.completed_at)}
@@ -168,3 +170,23 @@ class AuditLog(db.Model):
         return {"id": self.id, "action": self.action, "entity_type": self.entity_type,
                 "entity_id": self.entity_id, "details": self.details,
                 "created_at": _iso_utc(self.created_at)}
+
+
+# Counts exposed by to_dict() are computed as correlated subqueries and come back inline
+# with the parent row. The obvious len(self.scans) / len(self.findings) instead lazy-loads
+# every child row purely to count it — an N+1 that made the dashboard issue one query per
+# recent scan and drag every finding across the wire. Defined here, after every class, so
+# both sides of each relationship are already mapped.
+Project.scan_count = column_property(
+    select(func.count(Scan.id))
+    .where(Scan.project_id == Project.id)
+    .correlate(Project)
+    .scalar_subquery()
+)
+
+Scan.finding_count = column_property(
+    select(func.count(Finding.id))
+    .where(Finding.scan_id == Scan.id)
+    .correlate(Scan)
+    .scalar_subquery()
+)
