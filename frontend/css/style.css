@@ -33,29 +33,10 @@ p { line-height: 1.55; }
 .hero h1 { font-size: clamp(38px, 5vw, 60px); line-height: 1.04; letter-spacing: -.5px; margin-bottom: 18px; }
 .hero p { color: var(--muted); font-size: 17px; line-height: 1.6; margin-bottom: 28px; }
 .actions { display: flex; gap: 14px; flex-wrap: wrap; }
-.hero-visual { position: relative; display: grid; place-items: center; min-height: 380px; }
-.hero-glow {
-  position: relative; width: 320px; height: 320px; border-radius: 50%;
-  background: radial-gradient(circle at 50% 42%, rgba(255,143,31,.16), transparent 70%);
-  border: 1px solid rgba(255,143,31,.25);
-  display: grid; place-items: center;
-}
-.hero-glow::before {
-  content: ""; position: absolute; inset: 34px; border-radius: 50%;
-  border: 1px solid rgba(255,143,31,.14);
-}
-.hero-glow svg.shield { width: 96px; height: 96px; }
-.hero-icon {
-  position: absolute; width: 46px; height: 46px; border-radius: 12px;
-  background: var(--panel); border: 1px solid var(--line);
-  display: grid; place-items: center; color: var(--accent);
-  box-shadow: 0 8px 20px rgba(0,0,0,.35);
-}
-.hero-icon svg { width: 20px; height: 20px; }
-.hero-icon.i1 { top: -6px; left: 6%; }
-.hero-icon.i2 { top: -6px; right: 6%; }
-.hero-icon.i3 { bottom: -6px; left: 6%; }
-.hero-icon.i4 { bottom: -6px; right: 6%; }
+.hero-visual { position: relative; display: grid; place-items: center; min-height: min(460px, 86vw); }
+/* Animated point field — drawn by js/hero-field.js. Decorative only: if the
+   script is blocked the canvas collapses to empty space and the hero still reads. */
+#heroField { display: block; width: 100%; height: min(460px, 86vw); }
 .workflow { display: grid; gap: 14px; }
 .workflow-item { display: flex; gap: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
 .workflow-item strong { color: var(--accent); font-size: 22px; flex-shrink: 0; }

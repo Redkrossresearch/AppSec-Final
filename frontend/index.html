@@ -33,24 +33,7 @@
         </div>
       </div>
       <div class="hero-visual">
-        <div class="hero-glow">
-          <svg class="shield" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M48 8l32 12v22c0 22-14 36-32 40-18-4-32-18-32-40V20l32-12z" stroke="var(--accent)" stroke-width="3"/>
-            <path d="M34 47l10 10 18-18" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <div class="hero-icon i1" title="Dependency scanning">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="12" height="18" rx="2"/><path d="M8 3v18M4 8h12M4 13h12"/></svg>
-          </div>
-          <div class="hero-icon i2" title="Malicious code detection">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="6"/><path d="M12 3v3M4.5 6.5 7 9M19.5 6.5 17 9M9 13h6M12 13v4"/></svg>
-          </div>
-          <div class="hero-icon i3" title="Risk alerts">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>
-          </div>
-          <div class="hero-icon i4" title="Reports & audit trail">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l5 5v13H6z"/><path d="M15 3v5h5M9 13h6M9 17h6"/></svg>
-          </div>
-        </div>
+        <canvas id="heroField" aria-hidden="true"></canvas>
       </div>
     </section>
 
@@ -139,5 +122,6 @@
 </section>
 </main>
 <script src="/js/app.js"></script>
+<script src="/js/hero-field.js"></script>
 </body>
 </html>
