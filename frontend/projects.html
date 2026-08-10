@@ -14,12 +14,44 @@
     <div class="content-header">
       <div>
         <h1>Projects</h1>
+        <div class="panel" style="margin:20px 0;">
+    <h2>🔍 Search Projects</h2>
+
+    <input
+        type="text"
+        id="projectSearch"
+        placeholder="Search project by name..."
+        style="width:100%;padding:12px;border-radius:8px;border:1px solid #444;background:#1f2937;color:white;">
+</div>
         <p>Upload a ZIP or register a folder path to start scanning.</p>
       </div>
     </div>
 
     <div class="alert" id="message"></div>
+    <!-- Project Statistics -->
+<div class="metrics">
 
+    <div class="panel metric">
+        <small>Total Projects</small>
+        <div class="number">12</div>
+    </div>
+
+    <div class="panel metric">
+        <small>Completed</small>
+        <div class="number" style="color:#22c55e;">8</div>
+    </div>
+
+    <div class="panel metric">
+        <small>Scanning</small>
+        <div class="number" style="color:#3b82f6;">2</div>
+    </div>
+
+    <div class="panel metric">
+        <small>Pending</small>
+        <div class="number" style="color:#f59e0b;">2</div>
+    </div>
+
+</div>
     <div class="grid two-col">
 
       <!-- Upload panel -->
