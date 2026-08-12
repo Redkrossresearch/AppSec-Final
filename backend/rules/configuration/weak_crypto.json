@@ -1,0 +1,16 @@
+﻿{
+  "id": "CFG004",
+  "category": "configuration",
+  "title": "Weak Cryptographic Algorithm",
+  "description": "Detects the use of weak cryptographic algorithms such as MD5 and SHA1.",
+  "pattern": "(hashlib\\.md5|hashlib\\.sha1|md5\\(|sha1\\(|MessageDigest\\.getInstance\\([\"']MD5[\"']\\)|MessageDigest\\.getInstance\\([\"']SHA-1[\"']\\)|createHash\\([\"']md5[\"']\\)|createHash\\([\"']sha1[\"']\\))",
+  "extensions": [
+    ".py",
+    ".js",
+    ".java"
+  ],
+  "severity": "high",
+  "cvss_score": 7.8,
+  "fixable": false,
+  "recommendation": "Avoid using MD5 or SHA1 for security-sensitive operations. Use SHA-256, SHA-3, bcrypt, Argon2, or PBKDF2 depending on the use case."
+}
