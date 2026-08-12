@@ -207,6 +207,20 @@ def scan_document(path, sanitized_dir=None):
         document["recommendations"] = recommendations
     if error_value is not None:
         document["error"] = str(error_value)
+
+    # Sanitization report. _first() would keep only one removed item, so the list is
+    # copied wholesale — the UI renders every neutralized item as proof of what the
+    # sanitizer actually did.
+    removed = meta.get("Sanitization Removed", [])
+    if removed or _first(meta, "Sanitization Status"):
+        document["sanitization"] = {
+            "status": _first(meta, "Sanitization Status", "UNKNOWN"),
+            "removed": [str(item) for item in removed],
+            "removed_count": len(removed),
+            "original_size": _first(meta, "Original Size"),
+            "sanitized_size": _first(meta, "Sanitized Size"),
+        }
+
     summary["document"] = document
 
     return {"findings": findings, "files_scanned": 1, "summary": summary}

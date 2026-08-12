@@ -387,6 +387,42 @@ YARA Matches: {len(yara_results)}
             "value": safe_file
         })
 
+        # Emit the removal report itself so "sanitized" is a *shown* claim rather than
+        # an invisible side effect. These are Sanitization* / *Size metadata labels
+        # (see taxonomy.METADATA_TYPES), so they land in summary["document"] for the UI
+        # instead of being mistaken for threat indicators.
+        for item in sanitize_result.get("removed", []):
+            findings.append({
+                "type": "Sanitization Removed",
+                "value": item
+            })
+
+        if sanitize_result.get("error"):
+            status = f"FAILED — {sanitize_result['error']}"
+        elif sanitize_result.get("removed"):
+            status = "ACTIVE CONTENT NEUTRALIZED"
+        else:
+            status = "NO ACTIVE CONTENT FOUND"
+        findings.append({
+            "type": "Sanitization Status",
+            "value": status
+        })
+
+        # Byte sizes make the before/after concrete on screen. Guarded because a parse
+        # failure leaves safe_file as None.
+        try:
+            findings.append({
+                "type": "Original Size",
+                "value": os.path.getsize(file_path)
+            })
+            if safe_file and os.path.exists(safe_file):
+                findings.append({
+                    "type": "Sanitized Size",
+                    "value": os.path.getsize(safe_file)
+                })
+        except OSError:
+            pass
+
     except Exception as e:
         findings.append({
             "type": "Error",

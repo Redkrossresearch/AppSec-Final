@@ -42,6 +42,10 @@ METADATA_TYPES = {
     "Risk Score", "Confidence", "Exploitability", "Threat Family",
     "MITRE Technique", "Attack Chain", "Reputation", "Executive Summary",
     "Sanitized File", "Text Found",
+    # Sanitization report (what the sanitizer actually neutralized). These describe
+    # the *remediation*, not the threat, so they must stay metadata — otherwise each
+    # removed item would surface as its own bogus low-severity finding.
+    "Sanitization Removed", "Sanitization Status", "Original Size", "Sanitized Size",
 }
 
 # The severity a raw type falls back to when it is neither a known threat nor

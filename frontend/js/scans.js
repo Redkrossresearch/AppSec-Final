@@ -130,6 +130,45 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.querySelector("#downloadFixed").style.display = "block";
       }
 
+      // ── Sanitization report (document scans only) ──────────────────
+      // summary.document.sanitization is written by the docscan adapter; code scans
+      // have no document block, so the panel simply stays hidden for them.
+      const sanitize = (summ.document || {}).sanitization;
+      if (sanitize) {
+        const panel = document.querySelector("#sanitizePanel");
+        panel.style.display = "block";
+
+        const neutralized = sanitize.removed_count > 0;
+        const failed = String(sanitize.status).startsWith("FAILED");
+        const color = failed ? "var(--danger)" : neutralized ? "var(--accent)" : "var(--muted)";
+        document.querySelector("#sanitizeStatus").innerHTML =
+          `Status: <strong style="color:${color}">${App.escape(sanitize.status)}</strong>` +
+          ` · <strong>${sanitize.removed_count}</strong> item(s) removed`;
+
+        document.querySelector("#sanitizeRemoved").innerHTML = neutralized
+          ? sanitize.removed.map(item => `<li>✓ ${App.escape(item)}</li>`).join("")
+          : `<li style="color:var(--muted);list-style:none;margin-left:-18px">No active content was present to remove.</li>`;
+
+        if (sanitize.original_size && sanitize.sanitized_size) {
+          document.querySelector("#sanitizeSize").textContent =
+            `Original ${sanitize.original_size} bytes → Sanitized ${sanitize.sanitized_size} bytes`;
+        }
+
+        // The sanitized copy is stored as a Report row with format "sanitized"; find
+        // it by scan so the button can hit the existing download endpoint.
+        try {
+          const { reports } = await App.api("/api/reports");
+          const safe = reports.find(r => r.scan_id === Number(id) && r.format === "sanitized");
+          if (safe) {
+            const btn = document.querySelector("#downloadSanitized");
+            btn.style.display = "block";
+            btn.onclick = () => { window.location.href = `/api/reports/${safe.id}/download`; };
+          }
+        } catch (err) {
+          // Non-fatal: the panel still shows what was removed without the download.
+        }
+      }
+
       // Report buttons
       for (const fmt of ["csv", "pdf"]) {
         document.querySelector(`#${fmt}Report`)?.addEventListener("click", async () => {

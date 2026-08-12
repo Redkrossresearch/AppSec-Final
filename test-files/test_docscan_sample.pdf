@@ -1,0 +1,60 @@
+%PDF-1.3
+%‚„œ”
+1 0 obj
+<<
+/Type /Pages
+/Count 1
+/Kids [ 4 0 R ]
+>>
+endobj
+2 0 obj
+<<
+/Producer (AppSec\055Final\040test\040fixture\040\050non\055malicious\051)
+/Title (DocScan\040Benign\040Test\040Sample)
+/Subject (sample\040strings\072\040powershell\040\055Command\040Get\055Process\040\073\040cmd\056exe\040\057c\040echo\040test\040\073\040data\072text\057plain\073base64\054SGVsbG8gRG9jU2Nhbg\075\075\040\073\040beacon\040192\0560\0562\05610)
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/Names <<
+/JavaScript <<
+/Names [ (50f3e81a\055f31a\0554108\0559df0\05534327dad2396) 5 0 R ]
+>>
+>>
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/Resources <<
+>>
+/MediaBox [ 0 0 612 792 ]
+/Parent 1 0 R
+>>
+endobj
+5 0 obj
+<<
+/Type /Action
+/S /JavaScript
+/JS (app\056alert\050\047DocScan\040test\040file\040\055\040benign\054\040no\040payload\040executed\056\047\051\073)
+>>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000015 00000 n 
+0000000074 00000 n 
+0000000456 00000 n 
+0000000604 00000 n 
+0000000694 00000 n 
+trailer
+<<
+/Size 6
+/Root 3 0 R
+/Info 2 0 R
+>>
+startxref
+861
+%%EOF

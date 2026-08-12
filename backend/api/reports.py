@@ -48,6 +48,11 @@ def download_report(report_id):
     # 404ing. The stored path may also be stale (written by a previous container), so
     # regenerate to a freshly resolved destination and record it.
     if not Path(report.output_path).is_file():
+        # Only csv/pdf are derived from scan.findings and can be rebuilt. A "sanitized"
+        # report is a cleaned copy of the uploaded document — regenerating it here would
+        # hand back a PDF *report* under the sanitized file's name, so 404 instead.
+        if report.format not in {"csv", "pdf"}:
+            return jsonify({"error": f"The {report.format} file is no longer available. Re-run the scan."}), 404
         destination = _write_report(report.scan, report.format, _report_destination(report.scan_id, report.format))
         report.output_path = str(destination)
         db.session.commit()

@@ -55,6 +55,23 @@
       <button id="fixAllBtn">⚡ Fix All</button>
     </div>
 
+    <!-- Sanitization report (document scans only; populated by scans.js) -->
+    <article class="panel" id="sanitizePanel" style="display:none">
+      <div class="content-header" style="margin:0 0 14px">
+        <div>
+          <h2 style="margin:0">🧹 Sanitization Report</h2>
+          <p style="color:var(--muted);font-size:13px;margin-top:4px">
+            The sanitized copy renders identically to the original — the difference is
+            structural. This is what was stripped from the PDF object model.
+          </p>
+        </div>
+        <button class="secondary" id="downloadSanitized" style="display:none">⬇ Download Safe Copy</button>
+      </div>
+      <p id="sanitizeStatus" style="font-size:14px;margin-bottom:10px"></p>
+      <ul id="sanitizeRemoved" style="margin:0 0 12px 18px;font-size:13px;line-height:1.9"></ul>
+      <p id="sanitizeSize" style="color:var(--muted);font-size:13px;margin:0"></p>
+    </article>
+
     <!-- Findings table -->
     <article class="panel">
       <h2>Findings</h2>
